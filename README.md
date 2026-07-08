@@ -1,6 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/GiorgiKavtaradze-prog/ZenCom/main/public/demo.html" alt="ZenCom Logo" width="200"/>
-  
+
   # ZenCom — AI Customer Support Desk (Intercom-style) for Teams
 
   [![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
@@ -13,6 +12,8 @@
 </div>
 
 > **⚠️ Disclaimer:** This is an **educational project** built for learning purposes only. "ZenCom" is a fictional name used for this demo — we do not claim any trademark or intellectual property rights over it. This project is **not affiliated with, endorsed by, or connected to Intercom, Zendesk, Crisp, or any other customer-support platform**. All organization names, conversations, leads, and seed data are entirely fictional. Third-party service names (Clerk, Convex, Vercel, Next.js, OpenAI, Tailwind CSS, etc.) are trademarks of their respective owners and are used here solely to describe the technologies used in this project.
+> 
+> **Note:** This project is actively maintained and updated regularly.
 
 ## Table of Contents
 
