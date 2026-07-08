@@ -1,120 +1,152 @@
 <div align="center">
 
-  # ZenCom — AI Customer Support Desk (Intercom-style) for Teams
+# ZenCom — AI Customer Support Desk
 
-  [![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
-  [![Convex](https://img.shields.io/badge/Convex-Backend-ff6b35?logo=convex)](https://convex.dev/referral/SONNYS4371)
-  [![Clerk](https://img.shields.io/badge/Clerk-Auth%20%2B%20Billing-6c47ff?logo=clerk)](https://go.clerk.com/vBypLmD)
-  [![OpenAI](https://img.shields.io/badge/OpenAI-AI%20Agent-412991?logo=openai)](https://platform.openai.com)
-  [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind%20CSS-v4-38bdf8?logo=tailwindcss)](https://tailwindcss.com/)
-  [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178c6?logo=typescript)](https://www.typescriptlang.org/)
-  [![License](https://img.shields.io/badge/License-Educational-yellow)](LICENSE)
+### Intercom-style chat widget with AI agents, knowledge base, and real-time collaboration
+
+[![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=next.js&logoColor=white)](https://nextjs.org/)
+[![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![Convex](https://img.shields.io/badge/Convex-Backend-FF6B35?logo=convex&logoColor=white)](https://convex.dev/referral/SONNYS4371)
+[![Clerk](https://img.shields.io/badge/Clerk-Auth%20%26%20Billing-6C47FF?logo=clerk&logoColor=white)](https://go.clerk.com/vBypLmD)
+[![OpenAI](https://img.shields.io/badge/OpenAI-AI%20Agent-412991?logo=openai&logoColor=white)](https://platform.openai.com)
+[![Tailwind CSS v4](https://img.shields.io/badge/Tailwind%20CSS-v4-38BDF8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![pnpm](https://img.shields.io/badge/pnpm-Workspace-F694C1?logo=pnpm&logoColor=white)](https://pnpm.io/)
+
 </div>
 
-> **⚠️ Disclaimer:** This is an **educational project** built for learning purposes only. "ZenCom" is a fictional name used for this demo — we do not claim any trademark or intellectual property rights over it. This project is **not affiliated with, endorsed by, or connected to Intercom, Zendesk, Crisp, or any other customer-support platform**. All organization names, conversations, leads, and seed data are entirely fictional. Third-party service names (Clerk, Convex, Vercel, Next.js, OpenAI, Tailwind CSS, etc.) are trademarks of their respective owners and are used here solely to describe the technologies used in this project.
-> 
-> **Note:** This project is actively maintained and updated regularly.
+> **⚠️ Educational Project Disclaimer:** This is a **learning-focused demonstration** built for educational purposes. "ZenCom" is a fictional name with no trademark claims. This project is **not affiliated with Intercom, Zendesk, Crisp, or any other customer support platform**. All data, conversations, and organizations are entirely fictional.
 
-## Table of Contents
+---
 
-- [Overview](#overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
-- [Architecture](#architecture)
-- [Database Schema](#database-schema)
-- [Deployment](#deployment)
-- [Project Status](#project-status)
-- [Contributing](#contributing)
-- [License](#license)
+## ✨ Overview
 
-## Overview
+ZenCom is a full-stack, real-time **B2B customer support platform** that combines:
 
-A full-stack, real-time **Intercom-style customer support desk** — a B2B multi-tenant SaaS where teams embed a chat + helpdesk **widget** on any website, let an **AI agent** answer from their own knowledge base, capture leads, and seamlessly **hand off to a human** in a shared team inbox.
+- **AI-powered chat widget** with RAG (Retrieval-Augmented Generation) from your knowledge base
+- **Real-time team inbox** with live presence and assignment capabilities
+- **Multi-tenant architecture** with Clerk organizations and role-based access
+- **No socket server required** — powered entirely by Convex's reactive database
 
-### Key Features
+<div align="center">
+<img src="https://placehold.co/800x400/38BDF8/FFFFFF?text=ZenCom+Demo+Screenshot" alt="ZenCom Demo" width="800">
+</div>
 
-- **Real-time messaging** — No page refreshes, no socket server to run
-- **Clerk Authentication** — Auth, organizations, AND billing handled by Clerk
-- **Convex Backend** — Reactive database that pushes changes to every connected client instantly
-- **AI Agent** — Answers strictly from your knowledge base with vector search, citations, and human escalation
+---
 
-## Features
+## 🎯 Key Features
 
-### For Support Agents
-
-- See every conversation live in a **shared team inbox** with unread + unassigned badges
-- **Take over** any AI conversation instantly — the AI steps back, you reply as a human, hand it back when done
-- Assign conversations, filter by status (open/closed), AI vs human mode, and assignee
-- See **live presence** (who's online / viewing) powered by Convex Presence
-- Manage captured **leads** (name, email, phone, source, status)
+### For Support Teams
+- 📬 **Shared team inbox** with real-time updates and assignment
+- 👥 **Live presence** — see who's online and viewing conversations
+- 🔄 **AI ↔ Human takeover** — seamlessly switch between AI and human agents
+- 🎯 **Smart filtering** — filter by status, mode, assignee, and more
 
 ### For Workspace Admins
-
-- Build a **knowledge base**: write helpdesk articles or use the **website crawler**
-- Ingest files (PDF/HTML) into the knowledge base
-- **Customize the widget** — colors, logo, corner radius, position, title, proactive messages, and lead-capture fields
-- Invite teammates and manage roles (admin / support)
-- Upgrade the workspace and manage billing
+- 📚 **Knowledge base management** — write articles or crawl your website
+- 📄 **File ingestion** — upload PDFs and documents to your knowledge base
+- 🎨 **Widget customization** — colors, logo, position, proactive messages
+- 👤 **Team management** — invite members with admin/support roles
+- 💳 **Billing integration** — subscription management via Clerk
 
 ### AI Agent Capabilities
+- 🔍 **RAG-powered answers** — responds only from your knowledge base
+- 📎 **Source citations** — cites relevant articles and documentation
+- 🎣 **Lead capture** — automatically captures visitor contact information
+- 🚨 **Human escalation** — hands off to agents when unsure
+- 🛡️ **Prompt injection protection** — hardened security guardrails
 
-- Answer visitor questions **only** from your knowledge base (RAG)
-- **Cite sources** and suggest relevant helpdesk articles
-- **Capture leads** when a visitor volunteers their contact details
-- **Escalate to a human** when unsure or out of scope
-- Resist prompt injection via strict, hardened system instructions
+---
 
-## Tech Stack
+## 🏗️ Architecture
 
-- **Frontend:** Next.js 16 App Router, React 19, Tailwind CSS v4, shadcn/ui
-- **Backend:** Convex (reactive database, vector search, file storage)
-- **Authentication:** Clerk (Auth + Organizations + B2B Billing)
-- **AI:** OpenAI (Agent + Embeddings), Vercel AI SDK v6
-- **Real-time:** Convex Presence, Convex Rate Limiter
+```mermaid
+flowchart TB
+    subgraph "Visitor Experience"
+        A[Customer Website] --> B[loader.js]
+        B --> C[Widget iframe]
+        C --> D[Ask Question]
+        D --> E[AI Agent]
+        E --> F[Citations + Handoff]
+    end
 
-## Prerequisites
+    subgraph "Team Dashboard"
+        G[Clerk Auth] --> H[Next.js Dashboard]
+        H --> I[Shared Inbox]
+        I --> J[Takeover/Assign]
+    end
 
-You'll need free accounts on these services to run the app:
+    subgraph "Backend Services"
+        K[Convex Database]
+        L[OpenAI API]
+        M[Clerk Webhooks]
+    end
 
-| Service | Purpose | Sign up |
-|---------|---------|---------|
-| **Clerk** | Authentication, organizations, and B2B subscription billing | [Create a free Clerk account →](https://go.clerk.com/vBypLmD) |
-| **Convex** | Real-time backend, database, vector search, and file storage | [Create a free Convex account →](https://convex.dev/referral/SONNYS4371) |
-| **OpenAI** | Powers the AI agent and embeddings (RAG) | [platform.openai.com →](https://platform.openai.com) |
-| **Vercel** (optional) | Deployment & hosting | [vercel.com →](https://vercel.com) |
+    E --> K
+    I --> K
+    K <--> L
+    M --> K
+```
 
-## Getting Started
+### Data Flow
 
-### 1. Clone the repository
+1. **Visitor** opens widget → asks question
+2. **AI Agent** queries knowledge base via vector search
+3. **Response** streams back with citations
+4. **Team** sees conversation in real-time dashboard
+5. **Agent takeover** switches to human mode instantly
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology | Purpose |
+|-------|------------|---------|
+| **Frontend** | Next.js 16, React 19, Tailwind CSS v4 | Modern web application |
+| **UI Components** | shadcn/ui, Radix UI | Accessible, customizable components |
+| **Backend** | Convex 1.41 | Reactive database, vector search, file storage |
+| **Authentication** | Clerk v7 | Auth, organizations, B2B billing |
+| **AI** | OpenAI, Vercel AI SDK v6 | Agent + embeddings (RAG) |
+| **Real-time** | Convex Presence, Rate Limiter | Live updates, abuse prevention |
+
+---
+
+## 📋 Prerequisites
+
+Create free accounts on these services:
+
+| Service | Purpose | Free Tier |
+|---------|---------|-----------|
+| [Clerk](https://go.clerk.com/vBypLmD) | Authentication, organizations, billing | ✅ Yes |
+| [Convex](https://convex.dev/referral/SONNYS4371) | Backend, database, vector search | ✅ Yes |
+| [OpenAI](https://platform.openai.com) | AI agent, embeddings | ✅ Yes |
+| [Vercel](https://vercel.com) | Deployment (optional) | ✅ Yes |
+
+---
+
+## 🚀 Quick Start
+
+### 1. Clone & Install
 
 ```bash
 git clone https://github.com/GiorgiKavtaradze-prog/ZenCom.git
 cd ZenCom
-```
-
-### 2. Install dependencies
-
-```bash
 pnpm install
 ```
 
-### 3. Set up environment variables
-
-Copy the example and fill it in:
+### 2. Environment Setup
 
 ```bash
 cp .env.local.example .env.local
 ```
 
 ```env
-# ---- Convex (auto-filled by `npx convex dev`) ----
+# Convex (auto-filled by `npx convex dev`)
 NEXT_PUBLIC_CONVEX_URL=https://your-deployment.convex.cloud
 NEXT_PUBLIC_CONVEX_SITE_URL=https://your-deployment.convex.site
 CONVEX_DEPLOYMENT=dev:your-deployment
 
-# ---- Clerk (from https://go.clerk.com/vBypLmD -> API keys) ----
+# Clerk (from https://go.clerk.com/vBypLmD)
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxx
 CLERK_SECRET_KEY=sk_test_xxx
 
@@ -124,40 +156,33 @@ NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=/dashboard
 NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/dashboard
 
-# ---- Clerk Billing plan ids ----
+# Clerk Billing plan IDs
 NEXT_PUBLIC_CLERK_PLAN_FREE_ID=cplan_xxx
 NEXT_PUBLIC_CLERK_PLAN_PRO_ID=cplan_xxx
 NEXT_PUBLIC_CLERK_PLAN_SCALE_ID=cplan_xxx
 ```
 
-### 4. Set up Clerk
+### 3. Configure Clerk
 
-1. Go to your [Clerk Dashboard](https://go.clerk.com/vBypLmD) and create a new application
-2. Copy your **Publishable Key** and **Secret Key** into `.env.local`
-3. Enable **Organizations** (Configure → Organizations)
-4. Activate the **Convex integration** (Configure → Integrations → Convex)
-5. Set up **Billing** with three plans: `free_org`, `pro`, `scale`
-6. Add `org_id` and `org_role` claims to the `convex` JWT template
+1. Create application in [Clerk Dashboard](https://go.clerk.com/vBypLmD)
+2. Enable **Organizations** and **Billing**
+3. Add `org_id` and `org_role` claims to JWT template
+4. Create three plans: `free_org`, `pro`, `scale`
+5. Set up webhook endpoint: `https://your-deployment.convex.site/clerk-webhook`
 
-### 5. Set up Convex
+### 4. Configure Convex
 
 ```bash
-# Start Convex dev server (generates types)
+# Start development server
 npx convex dev
 
-# Set environment variables on Convex deployment
+# Set environment variables
 npx convex env set CLERK_JWT_ISSUER_DOMAIN https://your-instance.clerk.accounts.dev
 npx convex env set CLERK_WEBHOOK_SIGNING_SECRET whsec_xxx
 npx convex env set OPENAI_API_KEY sk-...
 ```
 
-### 6. Configure Clerk Webhooks
-
-1. In your Clerk dashboard, go to **Webhooks** and create a new endpoint
-2. Set the URL to: `https://your-deployment.convex.site/clerk-webhook`
-3. Subscribe to: `organization.*`, `organizationMembership.*`, and all `subscription.*` events
-
-### 7. Run the development server
+### 5. Run Development Servers
 
 ```bash
 # Terminal 1 — Convex backend
@@ -167,71 +192,33 @@ npx convex dev
 pnpm dev
 ```
 
-Or run both at once:
+Or run both with a single command:
 
 ```bash
 pnpm dev:all
 ```
 
-Open [http://localhost:3000](http://localhost:3000) and you're in!
+Open [http://localhost:3000](http://localhost:3000) to get started!
 
-## Architecture
+---
 
-### Visitor Flow
-
-```mermaid
-flowchart LR
-    Embed[Snippet on customer site] --> Bubble[Launcher bubble]
-    Bubble --> Open[Open widget iframe]
-    Open --> Ask[Visitor asks a question]
-    Ask --> AI[AI answers from KB + cites]
-    AI -->|"needs a person"| Escalate[Escalate to human]
-    AI -->|"shares contact"| Lead[Capture lead]
-```
-
-### Agent / Admin Flow
-
-```mermaid
-flowchart LR
-    SignUp[Sign Up] --> Org[Create / Join Org]
-    Org --> KB[Crawl site / write articles]
-    KB --> Customize[Customize widget]
-    Customize --> EmbedSnippet[Copy embed snippet]
-    EmbedSnippet --> Inbox[Watch the shared inbox]
-    Inbox --> Takeover[Take over from AI]
-```
-
-### Architecture Overview
-
-```mermaid
-flowchart TB
-    Site["Customer site + loader.js"] -->|"iframe"| Widget["/widget (anonymous, no Clerk)"]
-    Widget -->|"public functions"| Convex[Convex Backend]
-    Dashboard["Next.js dashboard (Clerk)"] -->|"useQuery / useMutation"| Convex
-    Convex -->|"Real-time sync"| Dashboard
-    Convex -->|"Real-time sync"| Widget
-    Clerk["Clerk Auth + Orgs + Billing"] -->|"Svix Webhooks"| ConvexHTTP["Convex HTTP /clerk-webhook"]
-    ConvexHTTP -->|"Sync orgs, members, subscriptions"| Convex
-    Convex -->|"Agent (RAG) + embeddings"| OpenAI[OpenAI]
-    Convex -->|"File storage"| Storage[Convex Storage]
-    Dashboard -->|"proxy.ts middleware"| Clerk
-```
-
-## Database Schema
+## 📊 Database Schema
 
 | Table | Purpose | Key Fields |
 |-------|---------|------------|
-| **workspaces** | One per Clerk org (the tenant) | `clerkOrgId`, `slug`, `ownerClerkUserId` |
-| **workspaceMembers** | Mirror of Clerk org memberships | `clerkOrgId`, `clerkUserId`, `role`, `status` |
-| **conversations** | A visitor ↔ agent/AI thread | `workspaceId`, `visitorId`, `mode`, `status`, `assignedClerkUserId` |
-| **messages** | The live transcript | `conversationId`, `author`, `body`, `isAi`, `citations` |
-| **leads** | Captured contacts | `workspaceId`, `email`, `source`, `status` |
-| **helpdeskArticles** | Markdown help-center articles | `workspaceId`, `slug`, `category`, `status` |
-| **knowledgeChunks** | Embedded RAG chunks | `workspaceId`, `source`, `text`, `embedding` (1536-dim) |
-| **widgetAppearance** | Per-workspace widget styling | `themeColor`, `buttonColor`, `cornerRadius`, `position` |
-| **subscriptions** | Billing mirror | `clerkOrgId`, `planSlug`, `status`, `limits` |
+| `workspaces` | Tenant (one per Clerk org) | `clerkOrgId`, `slug`, `ownerClerkUserId` |
+| `workspaceMembers` | Org membership mirror | `clerkOrgId`, `clerkUserId`, `role` |
+| `conversations` | Visitor ↔ agent thread | `workspaceId`, `visitorId`, `mode`, `status` |
+| `messages` | Live transcript | `conversationId`, `author`, `body`, `isAi`, `citations` |
+| `leads` | Captured contacts | `workspaceId`, `email`, `source`, `status` |
+| `helpdeskArticles` | Help-center articles | `workspaceId`, `slug`, `category`, `status` |
+| `knowledgeChunks` | Embedded RAG chunks | `workspaceId`, `source`, `text`, `embedding` |
+| `widgetAppearance` | Widget styling | `themeColor`, `buttonColor`, `position` |
+| `subscriptions` | Billing mirror | `clerkOrgId`, `planSlug`, `status`, `limits` |
 
-## Deployment
+---
+
+## 🚢 Deployment
 
 ### Deploy to Vercel
 
@@ -250,36 +237,69 @@ npx convex deploy
 
 Set all environment variables in the Convex production dashboard.
 
-## Project Status
+---
 
-This project is currently in **active development** as an educational tutorial. See the [BUILD_PLAN.md](BUILD_PLAN.md) for the detailed implementation roadmap.
+## 📈 Project Status
 
-## Contributing
+This project is in **active development** as an educational tutorial. See [BUILD_PLAN.md](BUILD_PLAN.md) for the detailed implementation roadmap.
 
-This is an educational project. Feel free to fork it and adapt it for your own learning purposes!
+| Phase | Status | Description |
+|-------|--------|-------------|
+| Phase 0 | ✅ Complete | Foundation, auth, schema |
+| Phase 1 | ✅ Complete | Tenant re-key, org migration |
+| Phase 2 | ✅ Complete | Billing + subscriptions |
+| Phase 3 | ✅ Complete | KB ingestion (crawler, articles, files) |
+| Phase 4 | ✅ Complete | AI agent + RAG + guardrails |
+| Phase 5 | ✅ Complete | Takeover + realtime |
+| Phase 6 | ✅ Complete | Widget UX + customizer |
+| Phase 7 | ✅ Complete | Marketing + polish |
 
-## License
+---
+
+## 🤝 Contributing
+
+This is an educational project. Feel free to fork it and adapt it for your own learning!
+
+```bash
+# Fork the repository
+# Create your feature branch
+git checkout -b feature/amazing-feature
+
+# Commit your changes
+git commit -m 'Add amazing feature'
+
+# Push to the branch
+git push origin feature/amazing-feature
+
+# Open a pull request
+```
+
+---
+
+## 📄 License
 
 This project is shared for **educational purposes only**.
 
-### You CAN
+### ✅ You CAN
+- Use for personal learning and education
+- Fork and modify for non-commercial purposes
+- Use as a portfolio project (with attribution)
 
-- ✅ Use this project for **personal learning and education**
-- ✅ Fork it and **modify** it for non-commercial purposes
-- ✅ Use it as a **portfolio project** (with attribution)
+### ❌ You CANNOT
+- Use for commercial purposes without a separate license
+- Sell or include in a paid product
+- Remove attribution or license notice
 
-### You CANNOT
+---
 
-- ❌ Use it for **commercial purposes** without a separate license
-- ❌ Sell it or include it in a paid product
-- ❌ Remove the attribution or license notice
+## 🙏 Acknowledgments
 
-### Trademark Notice
-
-"ZenCom" is a fictional name used for this educational demo. This project is **not affiliated with, endorsed by, or connected to Intercom, Zendesk, Crisp, or any other customer-support platform**. All third-party names and logos are trademarks of their respective owners.
+- Built with ❤️ for learning purposes
+- Inspired by Intercom, Crisp, and Zendesk
+- Powered by the amazing Convex, Clerk, and OpenAI teams
 
 ---
 
 <div align="center">
-  <sub>Built with ❤️ for learning purposes</sub>
+<sub>Educational Demo • Not for Production Use • MIT License</sub>
 </div>
