@@ -1,0 +1,8 @@
+node_modules
+.next
+.env.local
+next-env.d.ts
+convex/_generated
+.vercel
+tsconfig.tsbuildinfo
+.claude/

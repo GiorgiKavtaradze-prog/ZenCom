@@ -1,0 +1,282 @@
+"use client";
+
+import { useQuery } from "convex/react";
+import { Bot, User, Inbox as InboxIcon } from "lucide-react";
+import { api } from "@/convex/_generated/api";
+import type { Id } from "@/convex/_generated/dataModel";
+import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { relativeTime, initials } from "./utils";
+
+export type InboxFilter = "all" | "mine" | "unassigned" | "ai" | "human";
+
+const FILTERS: { value: InboxFilter; label: string }[] = [
+  { value: "all", label: "All" },
+  { value: "mine", label: "Mine" },
+  { value: "unassigned", label: "Unassigned" },
+  { value: "ai", label: "AI" },
+  { value: "human", label: "Human" },
+];
+
+function ModeBadge({ mode }: { mode: "ai" | "human" }) {
+  return mode === "ai" ? (
+    <Badge className="h-5 gap-1 border-brand/20 bg-brand/10 px-1.5 text-[10px] font-medium text-brand">
+      <Bot className="size-3" />
+      AI
+    </Badge>
+  ) : (
+    <Badge className="h-5 gap-1 border-emerald-500/20 bg-emerald-500/10 px-1.5 text-[10px] font-medium text-emerald-600">
+      <User className="size-3" />
+      Human
+    </Badge>
+  );
+}
+
+export function ConversationList({
+  filter,
+  onFilterChange,
+  activeId,
+  onSelect,
+}: {
+  filter: InboxFilter;
+  onFilterChange: (f: InboxFilter) => void;
+  activeId: Id<"conversations"> | null;
+  onSelect: (id: Id<"conversations">) => void;
+}) {
+  const conversations = useQuery(api.inbox.listConversations, { filter });
+  const counts = useQuery(api.inbox.queueCounts, {});
+
+  const countFor = (f: InboxFilter): number | undefined => {
+    if (!counts) return undefined;
+    return counts[f];
+  };
+
+  return (
+    <div className="@container/inbox flex h-full flex-col">
+      {/* Filter tabs — single scrollable row on narrow panels, spread out when
+          the pane is wide. Driven by container queries (the pane is narrow on
+          desktop but full-width on mobile, so viewport breakpoints don't fit). */}
+      <div className="border-b border-border px-2.5 py-2.5">
+        <Tabs
+          value={filter}
+          onValueChange={(v) => onFilterChange(v as InboxFilter)}
+        >
+          <TabsList className="scrollbar-none flex h-auto w-full min-w-0 items-center justify-start gap-1 overflow-x-auto rounded-xl bg-muted/60 p-1 @sm/inbox:justify-between">
+            {FILTERS.map((f) => {
+              const c = countFor(f.value);
+              const isActive = filter === f.value;
+              return (
+                <TabsTrigger
+                  key={f.value}
+                  value={f.value}
+                  className="h-7 flex-none gap-1.5 rounded-lg px-2.5 text-xs font-medium whitespace-nowrap text-muted-foreground transition-colors data-[state=active]:bg-card data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-soft"
+                >
+                  {f.label}
+                  {c !== undefined && c > 0 ? (
+                    <span
+                      className={cn(
+                        "min-w-4 rounded-full px-1 text-center text-[10px] tabular-nums",
+                        isActive
+                          ? "bg-brand/10 text-brand"
+                          : "bg-muted-foreground/10 text-muted-foreground",
+                      )}
+                    >
+                      {c}
+                    </span>
+                  ) : null}
+                </TabsTrigger>
+              );
+            })}
+          </TabsList>
+        </Tabs>
+      </div>
+
+      {/* List */}
+      <ScrollArea className="min-h-0 flex-1">
+        {conversations === undefined ? (
+          <div className="space-y-1 p-2">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="flex items-start gap-3 px-2 py-3">
+                <Skeleton className="size-9 shrink-0 rounded-full" />
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Skeleton className="h-3 w-24" />
+                    <Skeleton className="h-2.5 w-8" />
+                  </div>
+                  <Skeleton className="h-3 w-full" />
+                  <Skeleton className="h-3.5 w-12 rounded-full" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : conversations.length === 0 ? (
+          <div className="flex flex-col items-center px-6 py-16 text-center">
+            <div className="flex size-14 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
+              <InboxIcon className="size-6" />
+            </div>
+            <p className="mt-4 text-sm font-medium text-foreground">
+              No conversations here yet
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {filter === "all"
+                ? "Open the widget on a page and say hi."
+                : "Try a different filter."}
+            </p>
+          </div>
+        ) : (
+          <ul className="space-y-0.5 p-2">
+            {conversations.map((c) => {
+              const isActive = c._id === activeId;
+              return (
+                <li key={c._id}>
+                  <button
+                    type="button"
+                    onClick={() => onSelect(c._id)}
+                    aria-current={isActive ? "true" : undefined}
+                    className={cn(
+                      "group relative flex w-full items-start gap-3 rounded-xl px-2.5 py-3 text-left transition-colors",
+                      isActive
+                        ? "bg-brand/8"
+                        : "hover:bg-muted/70",
+                    )}
+                  >
+                    {isActive ? (
+                      <span
+                        aria-hidden
+                        className="absolute inset-y-2.5 left-0 w-1 rounded-full bg-gradient-to-b from-brand to-brand-2"
+                      />
+                    ) : null}
+                    <div className="relative shrink-0">
+                      <Avatar
+                        className={cn(
+                          "size-9 ring-2 ring-transparent transition-shadow",
+                          isActive && "ring-brand/20",
+                        )}
+                      >
+                        <AvatarFallback
+                          className={cn(
+                            "text-xs font-medium",
+                            isActive
+                              ? "bg-brand/15 text-brand"
+                              : "bg-muted text-muted-foreground",
+                          )}
+                        >
+                          {initials(c.visitorName)}
+                        </AvatarFallback>
+                      </Avatar>
+                      {c.unread ? (
+                        <span className="absolute -right-0.5 -top-0.5 size-2.5 rounded-full bg-brand ring-2 ring-card" />
+                      ) : null}
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={cn(
+                            "truncate text-sm",
+                            c.unread
+                              ? "font-semibold text-foreground"
+                              : "font-medium text-foreground/90",
+                          )}
+                        >
+                          {c.visitorName}
+                        </span>
+                        <span
+                          className={cn(
+                            "ml-auto shrink-0 text-[11px] tabular-nums",
+                            c.unread
+                              ? "font-medium text-brand"
+                              : "text-muted-foreground",
+                          )}
+                        >
+                          {relativeTime(c.lastMessageAt)}
+                        </span>
+                      </div>
+
+                      <LastMessagePreview
+                        conversationId={c._id}
+                        unread={c.unread}
+                      />
+
+                      <div className="mt-2 flex items-center gap-1.5">
+                        <ModeBadge mode={c.mode} />
+                        {c.status === "closed" ? (
+                          <Badge
+                            variant="outline"
+                            className="h-5 gap-1 px-1.5 text-[10px] text-muted-foreground"
+                          >
+                            Closed
+                          </Badge>
+                        ) : null}
+                        {c.assigneeName ? (
+                          <span className="ml-auto flex items-center gap-1">
+                            <Avatar className="size-5 ring-2 ring-card">
+                              {c.assigneeAvatarUrl ? (
+                                <AvatarImage src={c.assigneeAvatarUrl} />
+                              ) : null}
+                              <AvatarFallback className="bg-muted text-[8px] font-medium">
+                                {initials(c.assigneeName)}
+                              </AvatarFallback>
+                            </Avatar>
+                          </span>
+                        ) : (
+                          <span className="ml-auto text-[10px] font-medium text-muted-foreground/70">
+                            Unassigned
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </ScrollArea>
+    </div>
+  );
+}
+
+// Cheap last-message preview. Subscribes to the same reactive `messages.list`
+// the thread uses, so it's already cached by Convex (no extra round-trip).
+function LastMessagePreview({
+  conversationId,
+  unread,
+}: {
+  conversationId: Id<"conversations">;
+  unread?: boolean;
+}) {
+  const messages = useQuery(api.messages.list, { conversationId });
+  if (messages === undefined) {
+    return <Skeleton className="mt-1.5 h-3 w-3/4" />;
+  }
+  const last = messages[messages.length - 1];
+  if (!last) {
+    return (
+      <p className="mt-1 truncate text-xs italic text-muted-foreground/70">
+        No messages yet
+      </p>
+    );
+  }
+  const prefix =
+    last.author === "visitor" ? "" : last.author === "system" ? "" : "You: ";
+  return (
+    <p
+      className={cn(
+        "mt-1 truncate text-xs",
+        unread
+          ? "font-medium text-foreground/80"
+          : "text-muted-foreground",
+      )}
+    >
+      {prefix ? (
+        <span className="font-medium text-muted-foreground/80">{prefix}</span>
+      ) : null}
+      {last.body}
+    </p>
+  );
+}

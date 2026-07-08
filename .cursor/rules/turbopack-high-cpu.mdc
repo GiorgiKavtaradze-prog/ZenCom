@@ -1,0 +1,38 @@
+---
+description: Debugging high CPU from the Next.js dev server (Turbopack idle CPU spike). Use when next-server pegs the CPU, the dev server feels hot/slow, or investigating performance of `next dev` / `pnpm dev` / `pnpm dev:all`.
+alwaysApply: false
+---
+
+# Debugging high CPU from the dev server (Next.js + Turbopack)
+
+If `next-server` pegs the CPU (hundreds of % / multiple cores) — especially while
+the app is **idle** with no requests — suspect a **corrupted/stale `.next`
+Turbopack cache** BEFORE suspecting application code (React effects, Convex
+queries, agent logic, etc.).
+
+## Symptoms
+- `next-server` at 400–700%+ CPU even when "✓ Ready" and nothing is happening.
+- No recompiles logged, no in-flight requests; the browser tab and Convex are fine.
+- `sample <pid>` shows the Rust `notify-rs fsevents` watcher + tokio workers spinning.
+
+## Cause
+Turbopack's on-disk cache corrupts after dependency changes, Next version bumps, or
+switching between `next dev` (Turbopack, the Next 16 default) and `next dev --webpack`.
+Flipping between `pnpm dev` and `pnpm dev:all` is enough to trigger it.
+
+## Fix (in order)
+1. `rm -rf .next`, then restart `next dev`. ← resolves it ~80% of the time.
+2. If it persists: also `rm -rf node_modules/.cache .turbo`.
+3. Confirmation / temporary workaround: `next dev --webpack` (idle CPU should drop
+   to ~0%, proving it's Turbopack's cache/watcher, not your code).
+
+## Fast diagnosis recipe
+- Reproduce with the app idle (no browser open).
+- Compare bundlers: measure `next dev` vs `next dev --webpack` via
+  `ps aux | grep next-server`. Webpack ~0% + Turbopack high ⇒ it's the cache.
+- Do NOT kill it with `pkill -f "next dev"` — that pattern matches your own running
+  command and kills the shell. Kill by `next-server` name or by PID instead.
+
+## Prevention
+- Keep `.next` gitignored (it should already be).
+- Consider a clean script: `"dev:clean": "rm -rf .next && next dev"`.
